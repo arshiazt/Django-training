@@ -1,15 +1,37 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .forms import UserRegistrationForm
+from django.contrib.auth  import authenticate, login, logout
+from .forms import UserRegistrationForm, LoginForm
 
 # Create your views here.
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+  
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')    
+            return redirect('/')   
+         
     form = UserRegistrationForm()
     context = {'form':form}
     return render(request,'account/registration.html',context=context)
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
+            
+            if user is not None:
+                login(request,user)
+                return redirect('/') 
+        
+    form = LoginForm()
+    context = {'form':form}
+    return render(request,'account/login.html',context=context)
