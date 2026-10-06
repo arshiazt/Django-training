@@ -2,22 +2,32 @@ from django.shortcuts import render, redirect
 from django.contrib.auth  import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, LoginForm
+from django.views import View
 
 # Create your views here.
 
-def register_view(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-  
-    if request.method == 'POST':
+class RegisterView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        
+        form = UserRegistrationForm()
+        context = {'form':form}
+
+        return render(request,'account/registration.html',context=context)
+        
+    def post(self, request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')   
-         
-    form = UserRegistrationForm()
-    context = {'form':form}
-    return render(request,'account/registration.html',context=context)
+            return redirect('/')
+        
+        context = {'form':form}
+        return render(request,'account/registration.html',context=context)
 
 def login_view(request):
     if request.user.is_authenticated:
