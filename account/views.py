@@ -41,6 +41,34 @@ class RegisterView(CreateView):
 
         return super().dispatch(request, *args, **kwargs)
 
+class LoginView(View):
+
+    def get(self,request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        
+        form = LoginForm()
+        context = {'form':form}
+        return render(request,'account/login.html',context=context)
+
+    def post(self,request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
+            
+            if user is not None:
+                login(request,user)
+                return redirect('/')
+
+        context = {'form':form}
+        return render(request,'account/login.html',context=context)
+
+
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('/')
