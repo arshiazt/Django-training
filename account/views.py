@@ -3,31 +3,43 @@ from django.contrib.auth  import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, LoginForm
 from django.views import View
+from django.views.generic import CreateView
 
 # Create your views here.
 
-class RegisterView(View):
+# class RegisterView(View):
 
-    def get(self, request):
+#     def get(self, request):
+#         if request.user.is_authenticated:
+#             return redirect('/')
+        
+#         form = UserRegistrationForm()
+#         context = {'form':form}
+
+#         return render(request,'account/registration.html',context=context)
+        
+#     def post(self, request):
+#         if request.user.is_authenticated:
+#             return redirect('/')
+        
+#         form = UserRegistrationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/')
+        
+#         context = {'form':form}
+#         return render(request,'account/registration.html',context=context)
+
+class RegisterView(CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'account/registration.html'
+    success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('/')
-        
-        form = UserRegistrationForm()
-        context = {'form':form}
 
-        return render(request,'account/registration.html',context=context)
-        
-    def post(self, request):
-        if request.user.is_authenticated:
-            return redirect('/')
-        
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-        
-        context = {'form':form}
-        return render(request,'account/registration.html',context=context)
+        return super().dispatch(request, *args, **kwargs)
 
 def login_view(request):
     if request.user.is_authenticated:
