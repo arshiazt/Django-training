@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import ProfileEditForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, ListView
+from django.views.generic import UpdateView, ListView, DetailView
 from .models import Profile
 
 # Create your views here.
@@ -30,3 +30,10 @@ class ProfileListView(ListView):
     # ).exclude(
     #     user=self.request.user
     # )
+
+class ProfileDetailView(DetailView):
+
+    template_name = 'user/profile_detail.html'
+    context_object_name = 'profile'
+    model = Profile
+    pk_url_kwarg = 'id'

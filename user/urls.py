@@ -9,4 +9,5 @@ urlpatterns = [
     # profile edit
     path('profile/edit/',views.ProfileEditView.as_view(),name='profile-edit'),
     # profile detail
+    path('profile/detail/<int:id>/',views.ProfileDetailView.as_view(),name='profile-detail'),
 ]
