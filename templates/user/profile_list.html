@@ -1,0 +1,13 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile List</title>
+</head>
+<body>
+    {% for profile in profiles %}
+    <p>{{profile.user.email}}</p>
+    <P>{{profile.first_name}}</P>
+    {% endfor %}
+</body>
+</html>

@@ -2,12 +2,13 @@ from django.shortcuts import render
 from .forms import ProfileEditForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
+from .models import Profile
 
 # Create your views here.
 
 class ProfileEditView(LoginRequiredMixin,UpdateView):
-    
+
     template_name = 'user/profile_edit.html'
     form_class = ProfileEditForm
     login_url = '/account/login/'
@@ -15,3 +16,17 @@ class ProfileEditView(LoginRequiredMixin,UpdateView):
     
     def get_object(self, queryset=None):
         return self.request.user.profile
+    
+class ProfileListView(ListView):
+
+    # model = Profile
+    queryset = Profile.objects.filter(user__is_active=True)
+    template_name = 'user/profile_list.html'
+    context_object_name = 'profiles'
+
+    # def get_queryset(self):
+    #     return Profile.objects.filter(
+    #     user__is_active=True
+    # ).exclude(
+    #     user=self.request.user
+    # )
