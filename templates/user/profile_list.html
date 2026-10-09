@@ -6,7 +6,7 @@
 </head>
 <body>
     {% for profile in profiles %}
-    <p>{{profile.user.email}}</p>
+    <p><a href="{% url 'user:profile-detail' id=profile.id %}">{{profile.user.email}}</p></a>
     <P>{{profile.first_name}}</P>
     {% endfor %}
 </body>
