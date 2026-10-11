@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Post(models.Model):
 
-    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    author = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_post')
     title = models.CharField(max_length=255)
     content = models.TextField()
     image = models.ImageField(upload_to='blog/',blank=True,null=True)
